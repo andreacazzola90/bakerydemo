@@ -24,6 +24,7 @@ from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
 from .blocks import BaseStreamBlock
+from wagtail.api import APIField
 
 
 @register_snippet
@@ -187,6 +188,13 @@ class StandardPage(Page):
         FieldPanel("introduction"),
         FieldPanel("body"),
         FieldPanel("image"),
+    ]
+
+    # Export fields over the API
+    api_fields = [
+        APIField('introduction'),
+        APIField('body'),
+        APIField('image'),  # This will nest the relevant BlogPageAuthor objects in the API response
     ]
 
 

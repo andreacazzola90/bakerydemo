@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 from django.contrib import messages
 from django.db import models
+from django.forms import DateField
 from django.shortcuts import redirect, render
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
@@ -14,6 +15,10 @@ from wagtail.search import index
 
 from bakerydemo.base.blocks import BaseStreamBlock
 from bakerydemo.base.models import Person
+
+from wagtail.api import APIField
+
+from rest_framework.fields import DateField
 
 
 class BlogPersonRelationship(Orderable, models.Model):
@@ -89,6 +94,12 @@ class BlogPage(Page):
 
     search_fields = Page.search_fields + [
         index.SearchField("body"),
+    ]
+
+    api_fields = [
+        # Date in ISO8601 format (the default)
+        APIField('date_published'),
+        APIField("introduction"),
     ]
 
     def authors(self):

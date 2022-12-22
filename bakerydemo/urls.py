@@ -1,7 +1,7 @@
 import debug_toolbar
 from django.conf import settings
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
 from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.contrib.sitemaps.views import sitemap
@@ -17,8 +17,11 @@ urlpatterns = [
     path("documents/", include(wagtaildocs_urls)),
     path("search/", search_views.search, name="search"),
     path("sitemap.xml", sitemap),
-    path("api/v2/", api_router.urls),
     path("__debug__/", include(debug_toolbar.urls)),
+    path("api/v2/", api_router.urls),
+    # Ensure that the api_router line appears above the default Wagtail page serving route
+    re_path(r'^', include(wagtail_urls)),
+
 ]
 
 
